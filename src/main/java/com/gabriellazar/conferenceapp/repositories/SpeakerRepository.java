@@ -1,0 +1,8 @@
+package com.gabriellazar.conferenceapp.repositories;
+
+import com.gabriellazar.conferenceapp.models.Speaker;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+public interface SpeakerRepository extends JpaRepository<Speaker,Long> {
+}
