@@ -1,6 +1,7 @@
 package com.gabriellazar.conferenceapp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @ToString
 @Table(name = "speakers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Speaker {
 
     @Id
