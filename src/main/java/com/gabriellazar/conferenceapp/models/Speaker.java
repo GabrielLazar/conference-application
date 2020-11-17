@@ -1,12 +1,17 @@
 package com.gabriellazar.conferenceapp.models;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "speakers")
 public class Speaker {
 
@@ -19,6 +24,10 @@ public class Speaker {
     private String company;
     private String speaker_bio;
     private byte[] speaker_photo;
+
+    @ManyToMany(mappedBy = "speakers")
+    @JsonIgnore
+    List<Speaker> sessions;
 
 
 }
