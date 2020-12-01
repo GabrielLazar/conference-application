@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("api/v1/speakers")
+@RequestMapping("/api/v1/speakers")
 public class SpeakerController {
 
     @Autowired
     private SpeakerRepository speakerRepository;
 
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<Speaker>> getSpeakers() {
         return ResponseEntity.status(HttpStatus.OK).body(speakerRepository.findAll());
     }
 
-    @GetMapping("{speakerId}")
+    @GetMapping("/{speakerId}")
     public ResponseEntity<Speaker> getSpeakersById(@PathVariable final Long speakerId) {
 
         Speaker speaker = speakerRepository.findById(speakerId).orElseThrow(

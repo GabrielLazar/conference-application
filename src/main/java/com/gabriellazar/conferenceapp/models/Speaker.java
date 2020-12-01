@@ -3,7 +3,7 @@ package com.gabriellazar.conferenceapp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.springframework.stereotype.Component;
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,9 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 @ToString
-@Table(name = "speakers")
+@Entity(name = "speakers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Speaker {
 
@@ -29,7 +28,7 @@ public class Speaker {
 
     @ManyToMany(mappedBy = "speakers")
     @JsonIgnore
-    List<Speaker> sessions;
+    List<Session> sessions;
 
 
 }
