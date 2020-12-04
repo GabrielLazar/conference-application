@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -19,7 +20,7 @@ public class SpeakerController {
     private SpeakerRepository speakerRepository;
 
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Speaker>> getSpeakers() {
         return ResponseEntity.status(HttpStatus.OK).body(speakerRepository.findAll());
     }
@@ -31,6 +32,13 @@ public class SpeakerController {
                 () -> new DataNotFoundException("Speaker not found with this id :: " + speakerId));
         return ResponseEntity.status(HttpStatus.OK).body(speaker);
 
+    }
+
+    @PostMapping
+    public ResponseEntity<Speaker> createSpeaker(@RequestBody @Valid Speaker speaker){
+
+      Speaker speakerCreated =  speakerRepository.saveAndFlush(speaker);
+      return ResponseEntity.status(HttpStatus.OK).body(speakerCreated);
     }
 
 
