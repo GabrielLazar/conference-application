@@ -29,8 +29,8 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiEndpointsInfo() {
-        return new ApiInfoBuilder().title("Conference Application Demo API")
-                .description("Conference Application Demo API")
+        return new ApiInfoBuilder().title("Conference Application API")
+                .description("Conference Application API")
                 .version(appVersion)
                 .build();
     }
