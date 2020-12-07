@@ -5,12 +5,14 @@ import com.gabriellazar.conferenceapp.models.ApiError;
 import com.gabriellazar.conferenceapp.models.Speaker;
 import com.gabriellazar.conferenceapp.repositories.SpeakerRepository;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @RestController
@@ -39,7 +41,7 @@ public class SpeakerController {
 
     @PostMapping
     @ApiOperation(value = "Create a new Speaker", notes = "Create a new Speaker")
-    public ResponseEntity<Speaker> createSpeaker(@RequestBody @Valid Speaker speaker){
+    public ResponseEntity<Speaker> createSpeaker(@RequestBody @Valid final Speaker speaker){
 
       Speaker speakerCreated =  speakerRepository.saveAndFlush(speaker);
       return ResponseEntity.status(HttpStatus.OK).body(speakerCreated);
@@ -51,6 +53,26 @@ public class SpeakerController {
         speakerRepository.deleteById(speakerId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("SUCCESS");
     }
+
+    @PutMapping("/{speakerId}")
+    @ApiOperation(value = "Update an existing Speaker",notes = "Update an existing Speaker")
+    public ResponseEntity<Speaker> updateSpeaker(
+            @PathVariable(name = "speakerId") final Long id,
+            @RequestBody @Valid @NotNull final Speaker speaker){
+
+        Speaker existingSpeaker = speakerRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException("Speaker not found with this id :: " + id));
+        BeanUtils.copyProperties(speaker,existingSpeaker,"speaker_id");
+        speakerRepository.saveAndFlush(existingSpeaker);
+        return ResponseEntity.status(HttpStatus.OK).body(existingSpeaker);
+    }
+
+    @GetMapping("/company/{companyName}")
+    @ApiOperation(value = "Get all the speakers by company",notes = "Get all the speakers by company")
+    public ResponseEntity<List<Speaker>> getSpeakersByCompany(@PathVariable(name = "companyName") final String companyName){
+        return  ResponseEntity.status(HttpStatus.OK).body(speakerRepository.findAllByCompany(companyName));
+    }
+
 
 
 }
