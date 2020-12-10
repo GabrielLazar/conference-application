@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/info")
 public class InfoController {
 
-    @Autowired
+
     private Info info;
+
+    @Autowired
+    public InfoController(Info info) {
+        this.info = info;
+    }
 
     @GetMapping()
     public ResponseEntity<Info> getInfo(){

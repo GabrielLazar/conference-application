@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,9 +20,13 @@ import java.util.*;
 @RequestMapping("/api/v1/speakers")
 public class SpeakerController {
 
-    @Autowired
+
     private SpeakerRepository speakerRepository;
 
+    @Autowired
+    public SpeakerController(SpeakerRepository speakerRepository) {
+        this.speakerRepository = speakerRepository;
+    }
 
     @GetMapping
     @ApiOperation(value = "Get all Speakers", notes = "Get all Speakers")
