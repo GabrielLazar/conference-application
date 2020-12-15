@@ -1,16 +1,12 @@
-
 INSERT INTO ticket_types (ticket_type_code,ticket_type_name,description,includes_workshop)
-VALUES ('P','Premium','Access to all conference events plus attend the workshop of your choice.',1),
-       ('S','Standard','Access to all conference keynotes,sessions,community open spaces and the exhibition hall',0),
-       ('C','Community','Access to keynotes,community open spaces and the exhibition hall',0);
+VALUES ('P','Premium','Access to all conference events plus attend the workshop of your choice.',TRUE),
+       ('S','Standard','Access to all conference keynotes,sessions,community open spaces and the exhibition hall',FALSE),
+       ('C','Community','Access to keynotes,community open spaces and the exhibition hall',FALSE);
 
 INSERT INTO pricing_categories (pricing_category_code,pricing_category_name,pricing_start_date,pricing_end_date)
 VALUES ('E','Early Bird','2019-12-01','2020-01-15'),
        ('R','Regular','2020-01-16','2020-03-20'),
        ('L','Last Minute','2020-03-21','2020-04-07');
-
-
-SET IDENTITY_INSERT dbo.ticket_prices ON;
 
 INSERT INTO ticket_prices (ticket_price_id,ticket_type_code,pricing_category_code,base_price)
 VALUES (1,'P','E',800),
@@ -26,21 +22,18 @@ VALUES (1,'P','E',800),
 -- TODO: discount_codes
 
 INSERT INTO time_slots (time_slot_id,time_slot_date,start_time,end_time,is_keynote_time_slot)
-VALUES (1,'2020-04-09','9:00','9:45',1),
-       (2,'2020-04-09','10:00','11:00',0),
-       (3,'2020-04-09','11:15','11:45',0),
-       (4,'2020-04-09','12:45','13:45',0),
-       (5,'2020-04-09','14:00','15:00',0),
-       (6,'2020-04-09','15:15','15:45',0),
-       (7,'2020-04-09','16:00','17:00',0),
-       (8,'2020-04-10','9:00','10:00',0),
-       (9,'2020-04-10','10:15','11:15',0),
-       (10,'2020-04-10','11:30','12:00',0),
-       (11,'2020-04-10','13:00','14:00',0),
-       (12,'2020-04-10','14:15','15:00',1);
-
-
-
+VALUES (1,'2020-04-09','9:00','9:45',TRUE),
+       (2,'2020-04-09','10:00','11:00',FALSE),
+       (3,'2020-04-09','11:15','11:45',FALSE),
+       (4,'2020-04-09','12:45','13:45',FALSE),
+       (5,'2020-04-09','14:00','15:00',FALSE),
+       (6,'2020-04-09','15:15','15:45',FALSE),
+       (7,'2020-04-09','16:00','17:00',FALSE),
+       (8,'2020-04-10','9:00','10:00',FALSE),
+       (9,'2020-04-10','10:15','11:15',FALSE),
+       (10,'2020-04-10','11:30','12:00',FALSE),
+       (11,'2020-04-10','13:00','14:00',FALSE),
+       (12,'2020-04-10','14:15','15:00',TRUE);
 
 INSERT INTO sessions (session_id,session_name,session_length,session_description)
 VALUES (1,'Keynote - The Golden Age of Software',45,''),
@@ -115,8 +108,6 @@ VALUES (1,'Keynote - The Golden Age of Software',45,''),
        (90,'Communication Skills for the Technology Professional',30,''),
        (91,'Personal Kanban',30,'');
 
-
-
 INSERT INTO session_schedule (schedule_id,time_slot_id,session_id,room)
 VALUES (1,1,1,'Grand Ballroom'),
        (2,2,2,'Cedar'),
@@ -190,8 +181,6 @@ VALUES (1,1,1,'Grand Ballroom'),
        (90,9,90,'Sycamore'),
        (91,10,91,'Sycamore');
 
-
-
 INSERT INTO tags (tag_id,description)
 VALUES (1,'.NET'),
        (2,'Java'),
@@ -207,8 +196,6 @@ VALUES (1,'.NET'),
        (12,'Cloud');
 
 -- TODO: session_tags
-
-
 
 INSERT INTO speakers (speaker_id,first_name,last_name,title,company,speaker_bio,speaker_photo)
 VALUES (1,'Sergio','Becker','Senior Developer','MicroOcean Software','Test', null),
@@ -325,8 +312,6 @@ VALUES (1,40),
        (90,14),
        (91,35);
 
-SET IDENTITY_INSERT dbo.workshops ON;
-
 INSERT INTO workshops (workshop_id,workshop_name,description,requirements,room,capacity)
 VALUES (1,'More Effective Agile Practices','','','Cedar',50),
        (2,'Azure DevOps One Day Bootcamp','','','Cherry',50),
@@ -340,3 +325,17 @@ VALUES (1,'More Effective Agile Practices','','','Cedar',50),
        (10,'Python for Enterprise Developers','','','Birch',40),
        (11,'Hands on Vue.js','','','Ash',40),
        (12,'Building APIs in ASP.NET Core','','','Oak',30);
+
+-- TODO: workshop_speakers
+
+
+select setval('attendees_attendee_id_seq',COALESCE((select max(attendee_id) + 1 from attendees), 1));
+select setval('attendee_tickets_attendee_ticket_id_seq',COALESCE((select max(attendee_ticket_id) + 1 from attendee_tickets), 1));
+select setval('discount_codes_discount_code_id_seq',COALESCE((select max(discount_code_id) + 1 from discount_codes), 1));
+select setval('session_schedule_schedule_id_seq',COALESCE((select max(schedule_id) + 1 from session_schedule), 1));
+select setval('sessions_session_id_seq',COALESCE((select max(session_id) + 1 from sessions), 1));
+select setval('speakers_speaker_id_seq',COALESCE((select max(speaker_id) + 1 from speakers), 1));
+select setval('tags_tag_id_seq',COALESCE((select max(tag_id) + 1 from tags), 1));
+select setval('ticket_prices_ticket_price_id_seq',COALESCE((select max(ticket_price_id) + 1 from ticket_prices), 1));
+select setval('time_slots_time_slot_id_seq',COALESCE((select max(time_slot_id) + 1 from time_slots), 1));
+select setval('workshops_workshop_id_seq',COALESCE((select max(workshop_id) + 1 from workshops), 1));

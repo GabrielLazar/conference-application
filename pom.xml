@@ -30,14 +30,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
         <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>8.2.1.jre11</version>
-            <scope>runtime</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.18.jre7</version>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>

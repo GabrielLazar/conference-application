@@ -9,13 +9,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/speakers")
 public class SpeakerController {
@@ -46,7 +45,7 @@ public class SpeakerController {
 
     @PostMapping
     @ApiOperation(value = "Create a new Speaker", notes = "Create a new Speaker")
-    public ResponseEntity<Speaker> createSpeaker(@RequestBody @Valid final Speaker speaker){
+    public ResponseEntity<Speaker> createSpeaker(@RequestBody final Speaker speaker){
 
       Speaker speakerCreated =  speakerRepository.saveAndFlush(speaker);
       return ResponseEntity.status(HttpStatus.OK).body(speakerCreated);
@@ -63,7 +62,7 @@ public class SpeakerController {
     @ApiOperation(value = "Update an existing Speaker",notes = "Update an existing Speaker")
     public ResponseEntity<Speaker> updateSpeaker(
             @PathVariable(name = "speakerId") final Long id,
-            @RequestBody @Valid @NotNull final Speaker speaker){
+            @RequestBody  @NotNull final Speaker speaker){
 
         Speaker existingSpeaker = speakerRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException("Speaker not found with this id :: " + id));
