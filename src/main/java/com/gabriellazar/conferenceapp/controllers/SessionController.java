@@ -2,12 +2,14 @@ package com.gabriellazar.conferenceapp.controllers;
 
 import com.gabriellazar.conferenceapp.models.Session;
 import com.gabriellazar.conferenceapp.repositories.SessionRepository;
+import com.gabriellazar.conferenceapp.services.SessionService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.*;
 
 
@@ -15,16 +17,31 @@ import java.util.*;
 @RequestMapping("/api/v1/session")
 public class SessionController {
 
-    private SessionRepository sessionRepository;
+    private SessionService sessionService;
 
-    public SessionController(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
+    @Autowired
+    public SessionController(SessionService sessionService) {
+        this.sessionService = sessionService;
     }
 
     @GetMapping
     @ApiOperation(value = "Get all the sessions", notes = "Get all the sessions")
-    public ResponseEntity<List<Session>> getAllSessions(){
-        return ResponseEntity.status(HttpStatus.OK).body(sessionRepository.findAll());
+    public ResponseEntity<List<Session>> getAllSessions() {
+        return ResponseEntity.status(HttpStatus.OK).body(sessionService.getAllSessions());
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get Session by Id", notes = "Get Session By Id")
+    public ResponseEntity<Session> getSessionById(@PathVariable(name = "id") final Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(sessionService.getSessionById(id));
+    }
+
+    @PostMapping
+    @ApiOperation(value = "Create a session",notes = "Create a session")
+    public ResponseEntity<Session> createSession(@RequestBody @Valid final Session session) {
+
+        Session createdSession = sessionService.createSession(session);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(createdSession);
     }
 
 
