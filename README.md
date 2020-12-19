@@ -1,5 +1,5 @@
 # Conference-Application
-Spring-boot Microservice Conference application is exposing various Restfull webservices using Spring REST, JPA and Postgre DB.
+Spring-boot Microservice Conference application is exposing various Restful web services using Spring REST, JPA and Postgre DB.
 Data and Schema SQL files are attached under resources.
 
 #Prerequisites
