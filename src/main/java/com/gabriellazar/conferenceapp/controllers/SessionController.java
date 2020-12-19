@@ -44,5 +44,19 @@ public class SessionController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(createdSession);
     }
 
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete Session By id",notes = "Delete Session by Id")
+    public ResponseEntity<String> deleteSession(@PathVariable(name = "id") final Long id){
+        sessionService.deleteSessionById(id);
+       return ResponseEntity.status(HttpStatus.NO_CONTENT).body("SUCCESS");
+    }
+
+    @PutMapping("{id}")
+    @ApiOperation(value = "Edit a session",notes = "Edit a session")
+    public ResponseEntity<Session> editSession(@PathVariable(name = "id") Long id, @RequestBody @Valid final Session session){
+       Session editSession = sessionService.editSessionById(id,session);
+        return ResponseEntity.status(HttpStatus.OK).body(editSession);
+    }
+
 
 }
