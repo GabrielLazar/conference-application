@@ -326,7 +326,20 @@ VALUES (1,'More Effective Agile Practices','','','Cedar',50),
        (11,'Hands on Vue.js','','','Ash',40),
        (12,'Building APIs in ASP.NET Core','','','Oak',30);
 
--- TODO: workshop_speakers
+
+INSERT INTO workshop_speakers(workshop_id,speaker_id)
+VALUES (1,40),
+       (2,4),
+       (3,5),
+       (4,20),
+       (5,15),
+       (6,20),
+       (7,21),
+       (8,1),
+       (9,4),
+       (10,20),
+       (11,5),
+       (12,3),
 
 
 select setval('attendees_attendee_id_seq',COALESCE((select max(attendee_id) + 1 from attendees), 1));

@@ -5,10 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,4 +23,12 @@ public class Workshop {
     private String requirements;
     private String room;
     private Integer capacity;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "workshop_speakers",
+            joinColumns = @JoinColumn(name = "workshop_id"),
+            inverseJoinColumns = @JoinColumn(name = "speaker_id")
+        )
+    List<Speaker> speakers;
 }

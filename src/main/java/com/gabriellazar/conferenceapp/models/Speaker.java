@@ -40,5 +40,9 @@ public class Speaker {
     @JsonIgnore
     List<Session> sessions;
 
+    @ManyToMany(mappedBy = "speakers")
+    @JsonIgnore
+    List<Workshop> workshops;
+
 
 }

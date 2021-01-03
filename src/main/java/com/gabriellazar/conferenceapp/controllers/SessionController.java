@@ -14,7 +14,7 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/api/v1/session")
+@RequestMapping("/api/v1/sessions")
 public class SessionController {
 
     private SessionService sessionService;
