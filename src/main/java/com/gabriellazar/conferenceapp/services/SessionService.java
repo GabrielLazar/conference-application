@@ -1,7 +1,7 @@
 package com.gabriellazar.conferenceapp.services;
 
 import com.gabriellazar.conferenceapp.models.Session;
-import com.gabriellazar.conferenceapp.models.Speaker;
+
 
 import java.util.List;
 
