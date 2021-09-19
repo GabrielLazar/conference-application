@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity(name = "sessions")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Session {
@@ -33,4 +32,13 @@ public class Session {
     )
     private List<Speaker> speakers;
 
+    @Override
+    public String toString() {
+        return "Session{" +
+                "session_id=" + session_id +
+                ", session_name='" + session_name + '\'' +
+                ", session_description='" + session_description + '\'' +
+                ", session_length=" + session_length +
+                "}";
+    }
 }

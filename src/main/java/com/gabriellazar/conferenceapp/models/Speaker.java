@@ -8,13 +8,13 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+
 @Entity(name = "speakers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Speaker {
@@ -44,5 +44,16 @@ public class Speaker {
     @JsonIgnore
     List<Workshop> workshops;
 
-
+    @Override
+    public String toString() {
+        return "Speaker{" +
+                "speaker_id=" + speaker_id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", title='" + title + '\'' +
+                ", company='" + company + '\'' +
+                ", speaker_bio='" + speaker_bio + '\'' +
+                ", speaker_photo=" + Arrays.toString(speaker_photo) +
+                "}";
+    }
 }
