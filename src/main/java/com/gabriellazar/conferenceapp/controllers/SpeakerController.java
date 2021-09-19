@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -26,7 +27,14 @@ public class SpeakerController {
 
     @GetMapping
     @ApiOperation(value = "Get all Speakers", notes = "Get all Speakers")
-    public ResponseEntity<List<Speaker>> getSpeakers() {
+    public ResponseEntity<List<Speaker>> getSpeakers(@RequestParam("company") final Optional<String> companyName) {
+        if (companyName.isPresent()) {
+            List<Speaker> speakersWithCompany = speakerService.getAllSpeakers()
+                    .stream()
+                    .filter(s -> s.getCompany().equalsIgnoreCase(companyName.get()))
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK).body(speakersWithCompany);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(speakerService.getAllSpeakers());
     }
 
@@ -39,34 +47,34 @@ public class SpeakerController {
 
     @PostMapping
     @ApiOperation(value = "Create a new Speaker", notes = "Create a new Speaker")
-    public ResponseEntity<Speaker> createSpeaker(@RequestBody @Valid final Speaker speaker){
+    public ResponseEntity<Speaker> createSpeaker(@RequestBody @Valid final Speaker speaker) {
 
-      Speaker speakerCreated =  speakerService.createSpeaker(speaker);
-      return ResponseEntity.status(HttpStatus.OK).body(speakerCreated);
+        Speaker speakerCreated = speakerService.createSpeaker(speaker);
+        return ResponseEntity.status(HttpStatus.OK).body(speakerCreated);
     }
 
     @DeleteMapping("/{speakerId}")
     @ApiOperation(value = "Delete a Speaker by Id", notes = "Delete a Speaker by Id")
-    public ResponseEntity<String> deleteSpeaker(@PathVariable(name = "speakerId") final Long speakerId){
-      speakerService.deleteSpeakerById(speakerId);
+    public ResponseEntity<String> deleteSpeaker(@PathVariable(name = "speakerId") final Long speakerId) {
+        speakerService.deleteSpeakerById(speakerId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("SUCCESS");
     }
 
     @PutMapping("/{speakerId}")
-    @ApiOperation(value = "Update an existing Speaker",notes = "Update an existing Speaker")
+    @ApiOperation(value = "Update an existing Speaker", notes = "Update an existing Speaker")
     public ResponseEntity<Speaker> updateSpeaker(
             @PathVariable(name = "speakerId") final Long id,
-            @RequestBody @Valid @NotNull final Speaker speaker){
+            @RequestBody @Valid @NotNull final Speaker speaker) {
 
-        Speaker existingSpeaker = speakerService.editSpeakerById(id,speaker);
+        Speaker existingSpeaker = speakerService.editSpeakerById(id, speaker);
         return ResponseEntity.status(HttpStatus.OK).body(existingSpeaker);
     }
 
-    @GetMapping("/company/{companyName}")
-    @ApiOperation(value = "Get all the speakers by company",notes = "Get all the speakers by company")
-    public ResponseEntity<List<Speaker>> getSpeakersByCompany(@PathVariable(name = "companyName") final String companyName){
-        return  ResponseEntity.status(HttpStatus.OK).body(speakerService.getSpeakerByCompany(companyName));
-    }
+//    @GetMapping("/company/{companyName}")
+//    @ApiOperation(value = "Get all the speakers by company", notes = "Get all the speakers by company")
+//    public ResponseEntity<List<Speaker>> getSpeakersByCompany(@PathVariable(name = "companyName") final String companyName) {
+//        return ResponseEntity.status(HttpStatus.OK).body(speakerService.getSpeakerByCompany(companyName));
+//    }
 
 
 }

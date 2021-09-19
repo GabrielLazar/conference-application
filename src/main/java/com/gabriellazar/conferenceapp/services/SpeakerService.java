@@ -11,6 +11,6 @@ public interface SpeakerService {
     Speaker createSpeaker(Speaker speaker);
     Speaker editSpeakerById(Long id,Speaker speaker);
     void deleteSpeakerById(Long id);
-    List<Speaker> getSpeakerByCompany(String company);
+
 
 }
