@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,10 +26,15 @@ public class SpeakerServiceImpl implements SpeakerService {
     }
 
     @Override
-    public List<Speaker> getAllSpeakers() {
+    public List<Speaker> getAllSpeakers(final Optional<String> companyName) {
         List<Speaker> speakers = null;
         try {
             speakers = speakerRepository.findAll();
+            if (companyName.isPresent()) {
+                speakers = speakers.stream()
+                        .filter(s -> s.getCompany().equalsIgnoreCase(companyName.get()))
+                        .collect(Collectors.toList());
+            }
             log.info("Successfully getting all speakers :: {}", speakers);
         } catch (Exception e) {
             log.error("Exception in getting all speakers :: Exception {}", e);
