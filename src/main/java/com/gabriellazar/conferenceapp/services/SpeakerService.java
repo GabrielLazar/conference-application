@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface SpeakerService {
 
-    List<Speaker> getAllSpeakers(Optional<String> companyName);
+    List<Speaker> getAllSpeakers(Optional<String> companyName,Optional<String> jobTitle);
     Speaker getSpeakerById(Long id);
     Speaker createSpeaker(Speaker speaker);
     Speaker editSpeakerById(Long id,Speaker speaker);

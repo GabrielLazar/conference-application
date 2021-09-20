@@ -26,13 +26,18 @@ public class SpeakerServiceImpl implements SpeakerService {
     }
 
     @Override
-    public List<Speaker> getAllSpeakers(final Optional<String> companyName) {
+    public List<Speaker> getAllSpeakers(final Optional<String> companyName, final Optional<String> jobTitle) {
         List<Speaker> speakers = null;
         try {
             speakers = speakerRepository.findAll();
             if (companyName.isPresent()) {
                 speakers = speakers.stream()
                         .filter(s -> s.getCompany().equalsIgnoreCase(companyName.get()))
+                        .collect(Collectors.toList());
+            }
+            if (jobTitle.isPresent()) {
+                speakers = speakers.stream()
+                        .filter(s -> s.getTitle().equalsIgnoreCase(jobTitle.get()))
                         .collect(Collectors.toList());
             }
             log.info("Successfully getting all speakers :: {}", speakers);

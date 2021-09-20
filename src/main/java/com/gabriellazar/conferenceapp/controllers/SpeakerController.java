@@ -26,9 +26,11 @@ public class SpeakerController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get all Speakers", notes = "Get all Speakers")
-    public ResponseEntity<List<Speaker>> getSpeakers(@RequestParam("company") final Optional<String> companyName) {
-        return ResponseEntity.status(HttpStatus.OK).body(speakerService.getAllSpeakers(companyName));
+    @ApiOperation(value = "Get all Speakers", notes = "Get all Speakers and query them by company and title")
+    public ResponseEntity<List<Speaker>> getSpeakers(
+            @RequestParam("company") final Optional<String> companyName,
+            @RequestParam("title") final Optional<String> title) {
+        return ResponseEntity.status(HttpStatus.OK).body(speakerService.getAllSpeakers(companyName, title));
     }
 
     @GetMapping("/{speakerId}")
