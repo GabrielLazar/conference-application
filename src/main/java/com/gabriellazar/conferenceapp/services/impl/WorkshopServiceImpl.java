@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,10 +26,14 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public List<Workshop> getAllWorkshop() {
+    public List<Workshop> getAllWorkshop(Optional<String> room) {
         List<Workshop> workshops = null;
         try {
             workshops = workshopRepository.findAll();
+            if (room.isPresent()) {
+                workshops = workshops.stream().filter(w -> w.getRoom().equalsIgnoreCase(room))
+                        .collect(Collectors.toList());
+            }
             log.info("Getting all workshops :: {}", workshops);
         } catch (Exception e) {
             log.error("Exception is getting all sessions :: {}", e);
@@ -78,8 +84,4 @@ public class WorkshopServiceImpl implements WorkshopService {
 
     }
 
-    @Override
-    public List<Workshop> getWorkshopByRoom(String room) {
-        return workshopRepository.findByRoom(room);
-    }
 }

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/workshops")
@@ -24,8 +26,8 @@ public class WorkshopController {
 
     @GetMapping
     @ApiOperation(notes = "Get all workshops or filter workshops by room", value = "Get all workshops or get all workshops by room")
-    public ResponseEntity<List<Workshop>> getAllWorkshop(@RequestParam(required = false,name = "room") final String room) {
-        List<Workshop> workshopList = room == null ? workshopService.getAllWorkshop() : workshopService.getWorkshopByRoom(room);
+    public ResponseEntity<List<Workshop>> getAllWorkshop(@RequestParam(required = false, name = "room") final Optional<String> room) {
+        List<Workshop> workshopList = workshopService.getAllWorkshop(room);
         return ResponseEntity.status(HttpStatus.OK).body(workshopList);
     }
 
@@ -50,8 +52,8 @@ public class WorkshopController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete a Workshop",notes = "Delete a Workshop")
-    public ResponseEntity<String> deleteWorkshop(@PathVariable(name = "id") final Long id){
+    @ApiOperation(value = "Delete a Workshop", notes = "Delete a Workshop")
+    public ResponseEntity<String> deleteWorkshop(@PathVariable(name = "id") final Long id) {
         workshopService.deleteWorkshopById(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("SUCCESS");
     }
