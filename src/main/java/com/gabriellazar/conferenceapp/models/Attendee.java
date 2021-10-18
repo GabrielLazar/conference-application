@@ -19,6 +19,7 @@ public class Attendee {
     private Long attendeeId;
     private String firstName;
     private String lastName;
+    private String password;
     private String title;
     private String company;
     @Column(unique = true)
