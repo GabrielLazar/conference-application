@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
 @Entity(name = "speakers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Speaker {

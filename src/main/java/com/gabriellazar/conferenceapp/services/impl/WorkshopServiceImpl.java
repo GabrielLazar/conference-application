@@ -31,7 +31,7 @@ public class WorkshopServiceImpl implements WorkshopService {
         try {
             workshops = workshopRepository.findAll();
             if (room.isPresent()) {
-                workshops = workshops.stream().filter(w -> w.getRoom().equalsIgnoreCase(room))
+                workshops = workshops.stream().filter(w -> w.getRoom().equalsIgnoreCase(room.get()))
                         .collect(Collectors.toList());
             }
             log.info("Getting all workshops :: {}", workshops);
