@@ -4,6 +4,7 @@ CREATE TABLE attendees
     first_name   varchar(30) NOT NULL,
     last_name    varchar(30) NOT NULL,
     password     varchar(30) NOT NULL,
+    role         varchar(40) NULL,
     title        varchar(40) NULL,
     company      varchar(50) NULL,
     email        varchar(80) NOT NULL,

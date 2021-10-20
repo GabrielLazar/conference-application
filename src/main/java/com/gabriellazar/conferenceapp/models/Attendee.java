@@ -1,5 +1,6 @@
 package com.gabriellazar.conferenceapp.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class Attendee {
     private String password;
     private String title;
     private String company;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String role;
     @Column(unique = true)
     private String email;
     @Length(min = 10, max = 10)

@@ -1,4 +1,4 @@
-package com.gabriellazar.conferenceapp.swagger;
+package com.gabriellazar.conferenceapp.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
