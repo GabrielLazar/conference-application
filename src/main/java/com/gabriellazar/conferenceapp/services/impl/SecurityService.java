@@ -22,17 +22,14 @@ public class SecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
         Attendee attendee = attendeeService.getAttendeeByEmail(email);
-        if(attendee == null){
+        if (attendee == null) {
             throw new DataNotFoundException("Attendee not found with email :: " + email);
         }
-
-        return new org.springframework.security.core.userdetails.User(attendee.getEmail(),attendee.getPassword(),getAuthority(attendee);
-
+        return new org.springframework.security.core.userdetails.User(attendee.getEmail(), attendee.getPassword(), getAuthority(attendee));
     }
 
-    public List<GrantedAuthority> getAuthority(Attendee attendee ){
+    public List<GrantedAuthority> getAuthority(Attendee attendee) {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(attendee.getRole()));
