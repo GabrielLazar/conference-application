@@ -17,12 +17,12 @@ public class JWTUtil {
 
     private final String SIGNING_KEY = "conference";
 
-    public String generateToken(final Attendee attendee, final String email) {
+    public String generateToken(final Attendee attendee) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", attendee.getEmail());
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(attendee.getEmail())
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60 * 10))
