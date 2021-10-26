@@ -1,10 +1,12 @@
 package com.gabriellazar.conferenceapp.services.impl;
 
-import com.gabriellazar.conferenceapp.exceptions.DataNotFoundException;
+
 import com.gabriellazar.conferenceapp.models.Attendee;
 import com.gabriellazar.conferenceapp.repositories.AttendeeRepository;
 import com.gabriellazar.conferenceapp.services.AttendeeService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AttendeeServiceImpl implements AttendeeService {
 
     private AttendeeRepository attendeeRepository;
