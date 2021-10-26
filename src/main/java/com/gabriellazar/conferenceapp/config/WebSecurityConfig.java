@@ -15,6 +15,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private SecurityFilter securityFilter;
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"};
 
     public WebSecurityConfig(SecurityFilter securityFilter) {
         this.securityFilter = securityFilter;
@@ -32,10 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/attendee/authenticate", "/attendee/register")
-                .permitAll()
+                .antMatchers("/attendee/authenticate", "/attendee/register").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+        ;
 
         httpSecurity.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     }
