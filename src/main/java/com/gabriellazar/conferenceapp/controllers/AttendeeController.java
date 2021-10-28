@@ -2,6 +2,7 @@ package com.gabriellazar.conferenceapp.controllers;
 
 import com.gabriellazar.conferenceapp.models.Attendee;
 import com.gabriellazar.conferenceapp.models.LoginAttendee;
+import com.gabriellazar.conferenceapp.models.TokenResponse;
 import com.gabriellazar.conferenceapp.security.JWTUtil;
 import com.gabriellazar.conferenceapp.services.AttendeeService;
 import org.springframework.http.HttpStatus;
@@ -29,13 +30,13 @@ public class AttendeeController {
 
     @PostMapping
     @RequestMapping("/authenticate")
-    public ResponseEntity<String> generateToken(@RequestBody LoginAttendee loginAttendee){
+    public ResponseEntity<TokenResponse> generateToken(@RequestBody LoginAttendee loginAttendee){
         String email = loginAttendee.getEmail();
         String password = loginAttendee.getPassword();
         Attendee attendee = attendeeService.getAttendeeByEmail(email);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,password);
         authenticationManager.authenticate(authenticationToken);
-        String token = jwtUtil.generateToken(attendee);
+        TokenResponse token = new TokenResponse(jwtUtil.generateToken(attendee));
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 }
