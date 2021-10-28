@@ -43,8 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/attendee/authenticate", "/attendee/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
-                .authenticated()
-        ;
+                .authenticated();
 
         httpSecurity.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     }
