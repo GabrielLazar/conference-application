@@ -2,10 +2,8 @@ package com.gabriellazar.conferenceapp.controllers;
 
 import com.gabriellazar.conferenceapp.models.Attendee;
 import com.gabriellazar.conferenceapp.models.LoginAttendee;
-import com.gabriellazar.conferenceapp.models.TokenResponse;
 import com.gabriellazar.conferenceapp.security.JWTUtil;
 import com.gabriellazar.conferenceapp.services.AttendeeService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,14 +28,14 @@ public class AttendeeController {
 
     @PostMapping
     @RequestMapping("/authenticate")
-    public ResponseEntity<TokenResponse> generateToken(@RequestBody LoginAttendee loginAttendee){
+    public ResponseEntity<String> generateToken(@RequestBody LoginAttendee loginAttendee){
         String email = loginAttendee.getEmail();
         String password = loginAttendee.getPassword();
         Attendee attendee = attendeeService.getAttendeeByEmail(email);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,password);
         authenticationManager.authenticate(authenticationToken);
-        TokenResponse token = new TokenResponse(jwtUtil.generateToken(attendee));
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        String token = jwtUtil.generateToken(attendee);
+        return ResponseEntity.ok(token);
     }
 }
 
