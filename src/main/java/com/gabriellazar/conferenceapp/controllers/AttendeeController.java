@@ -34,7 +34,7 @@ public class AttendeeController {
         Attendee attendee = attendeeService.getAttendeeByEmail(email);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,password);
         authenticationManager.authenticate(authenticationToken);
-        String token = jwtUtil.generateToken(attendee);
+        String token = jwtUtil.generateToken(attendee,email);
         return ResponseEntity.ok(token);
     }
 }
