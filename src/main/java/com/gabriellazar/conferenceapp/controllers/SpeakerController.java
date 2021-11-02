@@ -6,16 +6,19 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 
 @RestController
 @RequestMapping("/api/v1/speakers")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpeakerController {
 
     private SpeakerService speakerService;
@@ -27,6 +30,7 @@ public class SpeakerController {
 
     @GetMapping
     @ApiOperation(value = "Get all Speakers", notes = "Get all Speakers and query them by company and title")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ATTENDEE')")
     public ResponseEntity<List<Speaker>> getSpeakers(
             @RequestParam("company") final Optional<String> companyName,
             @RequestParam("title") final Optional<String> title) {
