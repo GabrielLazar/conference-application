@@ -1,6 +1,5 @@
 package com.gabriellazar.conferenceapp.exceptions;
 
-import com.gabriellazar.conferenceapp.exceptions.DataNotFoundException;
 import com.gabriellazar.conferenceapp.models.ApiError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -21,6 +20,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleDataNotFound(DataNotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
+    @ExceptionHandler(AttendeeAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleAttendeeAlreadyExists(AttendeeAlreadyExistsException ex){
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
     @Override
