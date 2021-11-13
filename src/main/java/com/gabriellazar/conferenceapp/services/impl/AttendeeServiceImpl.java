@@ -19,4 +19,9 @@ public class AttendeeServiceImpl implements AttendeeService {
     public Attendee getAttendeeByEmail(String email) {
         return attendeeRepository.findByEmail(email).orElse(null);
     }
+
+    @Override
+    public Attendee saveAttendee(Attendee attendee) {
+        return attendeeRepository.save(attendee);
+    }
 }
