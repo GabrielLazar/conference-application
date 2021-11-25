@@ -43,7 +43,7 @@ public class AttendeeController {
     }
 
     @PostMapping
-    @RequestMapping("register")
+    @RequestMapping("/register")
     public ResponseEntity<Attendee> register(@RequestBody @Valid Attendee attendee) {
 
         Attendee existingAttendee = attendeeService.getAttendeeByEmail(attendee.getEmail());
