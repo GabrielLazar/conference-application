@@ -26,6 +26,7 @@ public class AttendeeServiceImpl implements AttendeeService {
     public Attendee saveAttendee(Attendee attendee) {
         Attendee savedAttendee = null;
         try{
+            attendee.setRole("ATTENDEE");
             savedAttendee = attendeeRepository.save(attendee);
             log.info("Successfully saved attendee :: {}", savedAttendee);
         } catch (Exception e){
