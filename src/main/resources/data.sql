@@ -1,3 +1,7 @@
+INSERT INTO attendees(attendee_id,first_name,last_name,title,company,email,phone_number,password,role)
+VALUES(1,'admin','admin','dev','Conference','admin@conference.com','0123456789','$2a$10$rwR2GkGu5q3sOv3xPJJVYeUF91P.ZjcDUrgnM1kvLq7KBpB2NdsPm','ADMIN');
+
+
 INSERT INTO ticket_types (ticket_type_code,ticket_type_name,description,includes_workshop)
 VALUES ('P','Premium','Access to all conference events plus attend the workshop of your choice.',TRUE),
        ('S','Standard','Access to all conference keynotes,sessions,community open spaces and the exhibition hall',FALSE),

@@ -53,5 +53,12 @@ public class AttendeeController {
         Attendee savedAttendee = attendeeService.saveAttendee(attendee);
         return ResponseEntity.status(HttpStatus.OK).body(savedAttendee);
     }
+
+    @PostMapping
+    @RequestMapping("/update/{id}")
+    public String updateToAdmin(Long id){
+        return "a";
+    }
+
 }
 
