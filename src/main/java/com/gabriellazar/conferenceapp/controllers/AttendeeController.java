@@ -1,6 +1,7 @@
 package com.gabriellazar.conferenceapp.controllers;
 
 import com.gabriellazar.conferenceapp.exceptions.AttendeeAlreadyExistsException;
+import com.gabriellazar.conferenceapp.exceptions.DataNotFoundException;
 import com.gabriellazar.conferenceapp.models.Attendee;
 import com.gabriellazar.conferenceapp.models.LoginAttendee;
 import com.gabriellazar.conferenceapp.security.JWTUtil;
@@ -9,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -56,8 +54,14 @@ public class AttendeeController {
 
     @PostMapping
     @RequestMapping("/update/{id}")
-    public String updateToAdmin(Long id){
-        return "a";
+    public ResponseEntity<Attendee> updateToAdmin(@PathVariable String email){
+        Attendee existingAttendee = attendeeService.getAttendeeByEmail(email);
+        if (existingAttendee == null) {
+            throw new DataNotFoundException("Attendee is not present with email :: " + email);
+        }
+        existingAttendee.setRole("ADMIN");
+        Attendee savedAttendee = attendeeService.saveAttendee(existingAttendee);
+        return ResponseEntity.status(HttpStatus.OK).body(savedAttendee);
     }
 
 }
