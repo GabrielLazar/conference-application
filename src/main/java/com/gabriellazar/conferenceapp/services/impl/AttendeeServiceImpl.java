@@ -5,6 +5,8 @@ import com.gabriellazar.conferenceapp.models.Attendee;
 import com.gabriellazar.conferenceapp.repositories.AttendeeRepository;
 import com.gabriellazar.conferenceapp.services.AttendeeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class AttendeeServiceImpl implements AttendeeService {
 
     private AttendeeRepository attendeeRepository;
+    private BCryptPasswordEncoder encoder;
 
-    public AttendeeServiceImpl(AttendeeRepository attendeeRepository) {
+    public AttendeeServiceImpl(AttendeeRepository attendeeRepository, @Lazy BCryptPasswordEncoder encoder) {
         this.attendeeRepository = attendeeRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -27,6 +31,7 @@ public class AttendeeServiceImpl implements AttendeeService {
         Attendee savedAttendee = null;
         try{
             attendee.setRole("ATTENDEE");
+            attendee.setPassword(encoder.encode(attendee.getPassword()));
             savedAttendee = attendeeRepository.save(attendee);
             log.info("Successfully saved attendee :: {}", savedAttendee);
         } catch (Exception e){
