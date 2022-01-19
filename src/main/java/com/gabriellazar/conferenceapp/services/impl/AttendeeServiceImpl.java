@@ -29,14 +29,27 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public Attendee saveAttendee(Attendee attendee) {
         Attendee savedAttendee = null;
-        try{
+        try {
             attendee.setRole("ATTENDEE");
             attendee.setPassword(encoder.encode(attendee.getPassword()));
             savedAttendee = attendeeRepository.save(attendee);
             log.info("Successfully saved attendee :: {}", savedAttendee);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Exception in saving attendee :: {}, Exception :: {}", attendee, e);
         }
         return getAttendeeByEmail(savedAttendee.getEmail());
+    }
+
+    @Override
+    public String updateToAdmin(Attendee attendee) {
+        try {
+            attendee.setRole("ADMIN");
+            attendeeRepository.save(attendee);
+            log.info("Successfully save admin :: {}", attendee);
+        } catch (Exception e) {
+            log.error("Exception in saving attendee :: {}, Exception :: {}", attendee, e);
+            return "UNSUCCESSFULLY UPDATING TO ADMIN :: " + attendee.getEmail();
+        }
+        return "SUCCESSFULLY UPDATING TO ADMIN :: " + attendee.getEmail();
     }
 }

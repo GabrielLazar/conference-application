@@ -6,4 +6,5 @@ public interface AttendeeService {
 
     Attendee getAttendeeByEmail(String email);
     Attendee saveAttendee(Attendee attendee);
+    String updateToAdmin(Attendee attendee);
 }
