@@ -53,15 +53,14 @@ public class AttendeeController {
     }
 
     @PostMapping
-    @RequestMapping("/update/{id}")
-    public ResponseEntity<Attendee> updateToAdmin(@PathVariable String email){
+    @RequestMapping("/update/{email}")
+    public ResponseEntity<String> updateToAdmin(@PathVariable(name = "email") String email){
         Attendee existingAttendee = attendeeService.getAttendeeByEmail(email);
         if (existingAttendee == null) {
             throw new DataNotFoundException("Attendee is not present with email :: " + email);
         }
-        existingAttendee.setRole("ADMIN");
-        Attendee savedAttendee = attendeeService.saveAttendee(existingAttendee);
-        return ResponseEntity.status(HttpStatus.OK).body(savedAttendee);
+        String message = attendeeService.updateToAdmin(existingAttendee);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
 }
