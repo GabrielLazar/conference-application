@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class AttendeeServiceImpl implements AttendeeService {
@@ -19,6 +24,25 @@ public class AttendeeServiceImpl implements AttendeeService {
     public AttendeeServiceImpl(AttendeeRepository attendeeRepository, @Lazy BCryptPasswordEncoder encoder) {
         this.attendeeRepository = attendeeRepository;
         this.encoder = encoder;
+    }
+
+    @Override
+    public List<Attendee> getAllAttendees(Optional<String> role) {
+        List<Attendee> attendees = null;
+        try {
+            attendees = attendeeRepository.findAll();
+            if(role.isPresent()){
+                attendees = attendees
+                        .stream()
+                        .filter(attendee -> attendee.getRole().equalsIgnoreCase(role.get()))
+                        .collect(Collectors.toList());
+            }
+            log.info("Successfully getting attendees :: {}");
+        } catch (Exception e){
+            log.error("Exception in getting attendees:: Exception {}", e);
+            return Collections.emptyList();
+        }
+        return attendees;
     }
 
     @Override
@@ -52,4 +76,6 @@ public class AttendeeServiceImpl implements AttendeeService {
         }
         return "SUCCESSFULLY UPDATING TO ADMIN :: " + attendee.getEmail();
     }
+
+
 }
