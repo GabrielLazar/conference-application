@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/attendee")
@@ -26,6 +28,11 @@ public class AttendeeController {
         this.attendeeService = attendeeService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Attendee>> getAttendees(@RequestParam Optional<String> role) {
+        return ResponseEntity.status(HttpStatus.OK).body(attendeeService.getAllAttendees(role));
     }
 
     @PostMapping
@@ -54,7 +61,7 @@ public class AttendeeController {
 
     @PostMapping
     @RequestMapping("/update/{email}")
-    public ResponseEntity<String> updateToAdmin(@PathVariable(name = "email") String email){
+    public ResponseEntity<String> updateToAdmin(@PathVariable(name = "email") String email) {
         Attendee existingAttendee = attendeeService.getAttendeeByEmail(email);
         if (existingAttendee == null) {
             throw new DataNotFoundException("Attendee is not present with email :: " + email);
