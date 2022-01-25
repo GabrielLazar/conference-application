@@ -8,6 +8,7 @@ import com.gabriellazar.conferenceapp.security.JWTUtil;
 import com.gabriellazar.conferenceapp.services.AttendeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class AttendeeController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<Attendee>> getAttendees(@RequestParam Optional<String> role) {
         return ResponseEntity.status(HttpStatus.OK).body(attendeeService.getAllAttendees(role));
     }
 
-    @PostMapping
-    @RequestMapping("/authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<String> generateToken(@RequestBody LoginAttendee loginAttendee) {
         String email = loginAttendee.getEmail();
         String password = loginAttendee.getPassword();
@@ -47,8 +48,7 @@ public class AttendeeController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping
-    @RequestMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<Attendee> register(@RequestBody @Valid Attendee attendee) {
 
         Attendee existingAttendee = attendeeService.getAttendeeByEmail(attendee.getEmail());
@@ -59,8 +59,8 @@ public class AttendeeController {
         return ResponseEntity.status(HttpStatus.OK).body(savedAttendee);
     }
 
-    @PostMapping
-    @RequestMapping("/update/{email}")
+    @PostMapping("/update/{email}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<String> updateToAdmin(@PathVariable(name = "email") String email) {
         Attendee existingAttendee = attendeeService.getAttendeeByEmail(email);
         if (existingAttendee == null) {
