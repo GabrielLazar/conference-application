@@ -27,7 +27,7 @@ public class AttendeeServiceImpl implements AttendeeService {
     }
 
     @Override
-    public List<Attendee> getAllAttendees(Optional<String> role) {
+    public List<Attendee> getAllAttendees(final Optional<String> role) {
         List<Attendee> attendees = null;
         try {
             attendees = attendeeRepository.findAll();
@@ -46,7 +46,7 @@ public class AttendeeServiceImpl implements AttendeeService {
     }
 
     @Override
-    public Attendee getAttendeeByEmail(String email) {
+    public Attendee getAttendeeByEmail(final String email) {
         return attendeeRepository.findByEmail(email).orElse(null);
     }
 

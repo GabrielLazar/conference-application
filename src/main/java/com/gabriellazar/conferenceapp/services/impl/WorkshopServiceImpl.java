@@ -26,7 +26,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public List<Workshop> getAllWorkshop(Optional<String> room) {
+    public List<Workshop> getAllWorkshop(final Optional<String> room) {
         List<Workshop> workshops = null;
         try {
             workshops = workshopRepository.findAll();
@@ -43,13 +43,13 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public Workshop getWorkshopById(Long id) {
+    public Workshop getWorkshopById(final Long id) {
         return workshopRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Workshop not found with this id :: " + id));
     }
 
     @Override
-    public Workshop createWorkshop(Workshop workshop) {
+    public Workshop createWorkshop(final Workshop workshop) {
         Workshop savedWorkshop = null;
         try {
             savedWorkshop = workshopRepository.saveAndFlush(workshop);
@@ -61,7 +61,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public Workshop editWorkshopById(Long id, Workshop workshop) {
+    public Workshop editWorkshopById(final Long id, final Workshop workshop) {
         try {
             Workshop existingWorkshop = getWorkshopById(id);
             BeanUtils.copyProperties(workshop, existingWorkshop, "workshop_id");
@@ -74,7 +74,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     }
 
     @Override
-    public void deleteWorkshopById(Long id) {
+    public void deleteWorkshopById(final Long id) {
         try {
             workshopRepository.deleteById(id);
             log.info("Successfully deleted Workshop with id ::{}", id);
