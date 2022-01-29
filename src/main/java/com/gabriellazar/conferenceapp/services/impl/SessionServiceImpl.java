@@ -38,13 +38,13 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session getSessionById(Long id) {
+    public Session getSessionById(final Long id) {
         return sessionRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Session not found with this id :: " + id));
     }
 
     @Override
-    public Session createSession(Session session) {
+    public Session createSession(final Session session) {
         Session savedSession = null;
         try {
             savedSession = sessionRepository.saveAndFlush(session);
@@ -56,7 +56,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session editSessionById(Long id, Session session) {
+    public Session editSessionById(final Long id, Session session) {
         try {
             Session existingSession = getSessionById(id);
             BeanUtils.copyProperties(existingSession, session, "session_id");
@@ -69,7 +69,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public void deleteSessionById(Long id) {
+    public void deleteSessionById(final Long id) {
         try {
             sessionRepository.deleteById(id);
             log.info("Successfully deleted session with id :: {}", id);

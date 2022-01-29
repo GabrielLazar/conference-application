@@ -23,7 +23,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         Attendee attendee = attendeeService.getAttendeeByEmail(email);
         if (attendee == null) {
             throw new DataNotFoundException("Attendee not found with email :: " + email);

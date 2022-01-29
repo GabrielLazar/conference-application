@@ -49,13 +49,13 @@ public class SpeakerServiceImpl implements SpeakerService {
     }
 
     @Override
-    public Speaker getSpeakerById(Long id) {
+    public Speaker getSpeakerById(final Long id) {
         return speakerRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Speaker not found with this id :: " + id));
     }
 
     @Override
-    public Speaker createSpeaker(Speaker speaker) {
+    public Speaker createSpeaker(final Speaker speaker) {
         Speaker savedSpeaker = null;
         try {
             savedSpeaker = speakerRepository.saveAndFlush(speaker);
@@ -67,7 +67,7 @@ public class SpeakerServiceImpl implements SpeakerService {
     }
 
     @Override
-    public Speaker editSpeakerById(Long id, Speaker speaker) {
+    public Speaker editSpeakerById(final Long id, Speaker speaker) {
         try {
             Speaker existingSpeaker = getSpeakerById(id);
             BeanUtils.copyProperties(speaker, existingSpeaker, "speaker_id");
@@ -80,7 +80,7 @@ public class SpeakerServiceImpl implements SpeakerService {
     }
 
     @Override
-    public void deleteSpeakerById(Long id) {
+    public void deleteSpeakerById(final Long id) {
         try {
             speakerRepository.deleteById(id);
             log.info("Successfully deleted speaker with id :: {}", id);
