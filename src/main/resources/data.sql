@@ -2,28 +2,6 @@ INSERT INTO attendees(attendee_id,first_name,last_name,title,company,email,phone
 VALUES(1,'admin','admin','dev','Conference','admin@conference.com','0123456789','$2a$10$rwR2GkGu5q3sOv3xPJJVYeUF91P.ZjcDUrgnM1kvLq7KBpB2NdsPm','ADMIN'),
       (2,'Alfredo','Zapista','QA Analyst','ABC Inc','alfredo.z@abc.com','1234567890','$2a$10$rwR2GkGu5q3sOv3xPJJVYeUF91P.ZjcDUrgnM1kvLq7KBpB2NdsPm','ATTENDEE');
 
-INSERT INTO ticket_types (ticket_type_code,ticket_type_name,description,includes_workshop)
-VALUES ('P','Premium','Access to all conference events plus attend the workshop of your choice.',TRUE),
-       ('S','Standard','Access to all conference keynotes,sessions,community open spaces and the exhibition hall',FALSE),
-       ('C','Community','Access to keynotes,community open spaces and the exhibition hall',FALSE);
-
-INSERT INTO pricing_categories (pricing_category_code,pricing_category_name,pricing_start_date,pricing_end_date)
-VALUES ('E','Early Bird','2019-12-01','2020-01-15'),
-       ('R','Regular','2020-01-16','2020-03-20'),
-       ('L','Last Minute','2020-03-21','2020-04-07');
-
-INSERT INTO ticket_prices (ticket_price_id,ticket_type_code,pricing_category_code,base_price)
-VALUES (1,'P','E',800),
-       (2,'P','R',1000),
-       (3,'P','L',1200),
-       (4,'S','E',500),
-       (5,'S','R',700),
-       (6,'S','L',1000),
-       (7,'C','E',100),
-       (8,'C','R',200),
-       (9,'C','L',300);
-
--- TODO: discount_codes
 
 INSERT INTO time_slots (time_slot_id,time_slot_date,start_time,end_time,is_keynote_time_slot)
 VALUES (1,'2020-04-09','9:00','9:45',TRUE),
@@ -347,12 +325,9 @@ VALUES (1,40),
 
 
 select setval('attendees_attendee_id_seq',COALESCE((select max(attendee_id) + 1 from attendees), 1));
-select setval('attendee_tickets_attendee_ticket_id_seq',COALESCE((select max(attendee_ticket_id) + 1 from attendee_tickets), 1));
-select setval('discount_codes_discount_code_id_seq',COALESCE((select max(discount_code_id) + 1 from discount_codes), 1));
 select setval('session_schedule_schedule_id_seq',COALESCE((select max(schedule_id) + 1 from session_schedule), 1));
 select setval('sessions_session_id_seq',COALESCE((select max(session_id) + 1 from sessions), 1));
 select setval('speakers_speaker_id_seq',COALESCE((select max(speaker_id) + 1 from speakers), 1));
 select setval('tags_tag_id_seq',COALESCE((select max(tag_id) + 1 from tags), 1));
-select setval('ticket_prices_ticket_price_id_seq',COALESCE((select max(ticket_price_id) + 1 from ticket_prices), 1));
 select setval('time_slots_time_slot_id_seq',COALESCE((select max(time_slot_id) + 1 from time_slots), 1));
 select setval('workshops_workshop_id_seq',COALESCE((select max(workshop_id) + 1 from workshops), 1));
