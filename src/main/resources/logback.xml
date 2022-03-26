@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <property name="console-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS/zzz} %-5level [%thread] [%C{15}] %msg%n"/>
+    <property name="log_root" value="d:/logs"/>
+    <property name="log_file_name" value="/conferenceApp"/>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_root}/${log_file_name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log_root}/${log_file_name}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>100GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${console-pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="unittest" class="com.gabriellazar.conferenceapp.utils.UnitTestAppender">
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${console-pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.gabriellazar.conferenceapp" level="INFO" additivity="false">
+        <appender-ref ref="unittest"/>
+        <appender-ref ref="file"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </root>
+
+</configuration>
