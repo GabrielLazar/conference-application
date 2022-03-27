@@ -6,6 +6,7 @@ import com.gabriellazar.conferenceapp.models.Speaker;
 import com.gabriellazar.conferenceapp.models.Workshop;
 import com.gabriellazar.conferenceapp.repositories.WorkshopRepository;
 import com.gabriellazar.conferenceapp.services.WorkshopService;
+import com.gabriellazar.conferenceapp.utils.UnitTestAppender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +43,7 @@ public class WorkshopServiceImplTest {
 
         Workshop expected = target.getWorkshopById(1L);
 
-        verify(workshopRepository,times(1)).findById(1L);
+        verify(workshopRepository, times(1)).findById(1L);
         assertEquals(expected.getWorkshop_id(), actual.getWorkshop_id());
         assertEquals(expected.getWorkshop_name(), actual.getWorkshop_name());
         assertEquals(expected.getDescription(), actual.getDescription());
@@ -58,5 +60,25 @@ public class WorkshopServiceImplTest {
                 .hasMessage("Workshop not found with this id :: 0");
     }
 
+    @Test
+    public void testCreateWorkshop() {
+        Workshop actual = new Workshop(1L, "Java Fundamentals", "description",
+                "requirements", "room", 100, Collections.singletonList(new Speaker()));
 
+        when(workshopRepository.saveAndFlush(actual)).thenReturn(actual);
+        when(workshopRepository.findById(1L)).thenReturn(Optional.of(actual));
+
+        Workshop expected = target.createWorkshop(actual);
+
+        verify(workshopRepository, times(1)).saveAndFlush(any());
+
+        assertEquals(expected.getWorkshop_id(), actual.getWorkshop_id());
+        assertEquals(expected.getWorkshop_name(), actual.getWorkshop_name());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getRequirements(), actual.getRequirements());
+        assertEquals(expected.getRoom(), actual.getRoom());
+        assertEquals(expected.getCapacity(), actual.getCapacity());
+
+        assertNotNull(UnitTestAppender.findLoggingEvent("Successfully saving workshop"));
+    }
 }
