@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
@@ -81,4 +82,12 @@ public class WorkshopServiceImplTest {
 
         assertNotNull(UnitTestAppender.findLoggingEvent("Successfully saving workshop"));
     }
+
+    @Test
+    public void testDeleteWorkshopById() {
+        doNothing().when(workshopRepository).deleteById(1L);
+        target.deleteWorkshopById(1L);
+        verify(workshopRepository, times(1)).deleteById(anyLong());
+    }
+
 }
