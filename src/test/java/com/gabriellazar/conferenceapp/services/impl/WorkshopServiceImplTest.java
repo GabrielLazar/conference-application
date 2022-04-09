@@ -11,13 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -88,6 +87,27 @@ public class WorkshopServiceImplTest {
         doNothing().when(workshopRepository).deleteById(1L);
         target.deleteWorkshopById(1L);
         verify(workshopRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void testEditWorkshopById() {
+        Workshop actual = new Workshop(1L, "Java Fundamentals", "description",
+                "requirements", "room", 100, Collections.singletonList(new Speaker()));
+
+        when(workshopRepository.saveAndFlush(actual)).thenReturn(actual);
+        when(workshopRepository.findById(1L)).thenReturn(Optional.of(actual));
+
+        Workshop expected = target.editWorkshopById(1L, actual);
+
+        verify(workshopRepository, times(1)).saveAndFlush(any());
+        verify(workshopRepository, times(2)).findById(anyLong());
+
+        assertEquals(expected.getWorkshop_id(), actual.getWorkshop_id());
+        assertEquals(expected.getWorkshop_name(), actual.getWorkshop_name());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getRequirements(), actual.getRequirements());
+        assertEquals(expected.getRoom(), actual.getRoom());
+        assertEquals(expected.getCapacity(), actual.getCapacity());
     }
 
 }
