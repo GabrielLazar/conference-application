@@ -13,14 +13,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @ExtendWith(MockitoExtension.class)
 public class WorkshopServiceImplTest {
@@ -108,6 +109,31 @@ public class WorkshopServiceImplTest {
         assertEquals(expected.getRequirements(), actual.getRequirements());
         assertEquals(expected.getRoom(), actual.getRoom());
         assertEquals(expected.getCapacity(), actual.getCapacity());
+    }
+
+    @Test
+    public void testGetAllWorkshopWithoutRoom(){
+        Workshop workshop1 = new Workshop(1L, "Java Fundamentals", "Java Class",
+                "No requirements", "Room A", 100, Collections.singletonList(new Speaker()));
+
+        Workshop workshop2 = new Workshop(2L, "C#Fundamentals", "C# class",
+                "No requirements", "Room B", 100, Collections.singletonList(new Speaker()));
+
+        when(workshopRepository.findAll()).thenReturn((Arrays.asList(workshop1,workshop2)));
+
+        List<Workshop> workshopList = target.getAllWorkshop(Optional.empty());
+        Comparator<Workshop> workshopComparator = Comparator.comparing(Workshop::getWorkshop_id).thenComparing(Workshop::getWorkshop_name)
+                .thenComparing(Workshop::getDescription).thenComparing(Workshop::getRequirements).thenComparing(Workshop::getRoom)
+                .thenComparing(Workshop::getCapacity);
+
+        assertEquals(2,workshopList.size());
+        verify(workshopRepository, times(1)).findAll();
+
+        assertThat(workshopList).usingElementComparator(workshopComparator)
+                .usingElementComparatorIgnoringFields("speakers").contains(workshop1);
+
+        assertThat(workshopList).usingElementComparator(workshopComparator)
+                .usingElementComparatorIgnoringFields("speakers").contains(workshop2);
     }
 
 }
