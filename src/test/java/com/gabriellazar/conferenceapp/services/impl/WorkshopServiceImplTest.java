@@ -136,4 +136,29 @@ public class WorkshopServiceImplTest {
                 .usingElementComparatorIgnoringFields("speakers").contains(workshop2);
     }
 
+    @Test
+    public void testGetAllWorkshopWithRoom(){
+        Workshop workshop1 = new Workshop(1L, "Java Fundamentals", "Java Class",
+                "No requirements", "Room A", 100, Collections.singletonList(new Speaker()));
+
+        Workshop workshop2 = new Workshop(2L, "C#Fundamentals", "C# class",
+                "No requirements", "Room B", 100, Collections.singletonList(new Speaker()));
+
+        when(workshopRepository.findAll()).thenReturn((Arrays.asList(workshop1,workshop2)));
+
+        List<Workshop> workshopList = target.getAllWorkshop(Optional.of("Room A"));
+
+        assertEquals(1,workshopList.size());
+        verify(workshopRepository, times(1)).findAll();
+
+        Workshop actual = workshopList.get(0);
+
+        assertEquals(workshop1.getWorkshop_id(), actual.getWorkshop_id());
+        assertEquals(workshop1.getWorkshop_name(), actual.getWorkshop_name());
+        assertEquals(workshop1.getDescription(), actual.getDescription());
+        assertEquals(workshop1.getRequirements(), actual.getRequirements());
+        assertEquals(workshop1.getRoom(), actual.getRoom());
+        assertEquals(workshop1.getCapacity(), actual.getCapacity());
+
+    }
 }
