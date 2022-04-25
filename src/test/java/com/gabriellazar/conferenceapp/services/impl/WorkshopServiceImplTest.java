@@ -38,11 +38,11 @@ public class WorkshopServiceImplTest {
 
     @Test
     public void testGetWorkshopByIdHappyPath() {
-        Workshop actual = new Workshop(1L, "Java Fundamentals", "description",
+        Workshop expected = new Workshop(1L, "Java Fundamentals", "description",
                 "requirements", "room", 100, Collections.singletonList(new Speaker()));
-        when(workshopRepository.findById(1L)).thenReturn(Optional.of(actual));
+        when(workshopRepository.findById(1L)).thenReturn(Optional.of(expected));
 
-        Workshop expected = target.getWorkshopById(1L);
+        Workshop actual = target.getWorkshopById(1L);
 
         verify(workshopRepository, times(1)).findById(1L);
         assertEquals(expected.getWorkshop_id(), actual.getWorkshop_id());
@@ -63,22 +63,22 @@ public class WorkshopServiceImplTest {
 
     @Test
     public void testCreateWorkshop() {
-        Workshop actual = new Workshop(1L, "Java Fundamentals", "description",
+        Workshop expected = new Workshop(1L, "Java Fundamentals", "description",
                 "requirements", "room", 100, Collections.singletonList(new Speaker()));
 
-        when(workshopRepository.saveAndFlush(actual)).thenReturn(actual);
-        when(workshopRepository.findById(1L)).thenReturn(Optional.of(actual));
+        when(workshopRepository.saveAndFlush(expected)).thenReturn(expected);
+        when(workshopRepository.findById(1L)).thenReturn(Optional.of(expected));
 
-        Workshop expected = target.createWorkshop(actual);
+        Workshop actual = target.createWorkshop(expected);
 
         verify(workshopRepository, times(1)).saveAndFlush(any());
 
-        assertEquals(expected.getWorkshop_id(), actual.getWorkshop_id());
-        assertEquals(expected.getWorkshop_name(), actual.getWorkshop_name());
-        assertEquals(expected.getDescription(), actual.getDescription());
-        assertEquals(expected.getRequirements(), actual.getRequirements());
-        assertEquals(expected.getRoom(), actual.getRoom());
-        assertEquals(expected.getCapacity(), actual.getCapacity());
+        assertEquals(actual.getWorkshop_id(), expected.getWorkshop_id());
+        assertEquals(actual.getWorkshop_name(), expected.getWorkshop_name());
+        assertEquals(actual.getDescription(), expected.getDescription());
+        assertEquals(actual.getRequirements(), expected.getRequirements());
+        assertEquals(actual.getRoom(), expected.getRoom());
+        assertEquals(actual.getCapacity(), expected.getCapacity());
 
         assertNotNull(UnitTestAppender.findLoggingEvent("Successfully saving workshop"));
     }
@@ -92,23 +92,23 @@ public class WorkshopServiceImplTest {
 
     @Test
     public void testEditWorkshopById() {
-        Workshop actual = new Workshop(1L, "Java Fundamentals", "description",
+        Workshop expected = new Workshop(1L, "Java Fundamentals", "description",
                 "requirements", "room", 100, Collections.singletonList(new Speaker()));
 
-        when(workshopRepository.saveAndFlush(actual)).thenReturn(actual);
-        when(workshopRepository.findById(1L)).thenReturn(Optional.of(actual));
+        when(workshopRepository.saveAndFlush(expected)).thenReturn(expected);
+        when(workshopRepository.findById(1L)).thenReturn(Optional.of(expected));
 
-        Workshop expected = target.editWorkshopById(1L, actual);
+        Workshop actual = target.editWorkshopById(1L, expected);
 
         verify(workshopRepository, times(1)).saveAndFlush(any());
         verify(workshopRepository, times(2)).findById(anyLong());
 
-        assertEquals(expected.getWorkshop_id(), actual.getWorkshop_id());
-        assertEquals(expected.getWorkshop_name(), actual.getWorkshop_name());
-        assertEquals(expected.getDescription(), actual.getDescription());
-        assertEquals(expected.getRequirements(), actual.getRequirements());
-        assertEquals(expected.getRoom(), actual.getRoom());
-        assertEquals(expected.getCapacity(), actual.getCapacity());
+        assertEquals(actual.getWorkshop_id(), expected.getWorkshop_id());
+        assertEquals(actual.getWorkshop_name(), expected.getWorkshop_name());
+        assertEquals(actual.getDescription(), expected.getDescription());
+        assertEquals(actual.getRequirements(), expected.getRequirements());
+        assertEquals(actual.getRoom(), expected.getRoom());
+        assertEquals(actual.getCapacity(), expected.getCapacity());
     }
 
     @Test
