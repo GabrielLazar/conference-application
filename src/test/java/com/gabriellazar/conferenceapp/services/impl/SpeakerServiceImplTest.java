@@ -66,7 +66,7 @@ class SpeakerServiceImplTest {
         Speaker actual = target.createSpeaker(expected);
 
         verify(speakerRepository, times(1)).saveAndFlush(any());
-        verify(speakerRepository,times(1)).findById(anyLong());
+        verify(speakerRepository, times(1)).findById(anyLong());
 
         assertEquals(expected.getSpeaker_id(), actual.getSpeaker_id());
         assertEquals(expected.getFirst_name(), actual.getFirst_name());
@@ -77,4 +77,12 @@ class SpeakerServiceImplTest {
 
         assertNotNull(UnitTestAppender.findLoggingEvent("Successfully saved speaker"));
     }
+
+    @Test
+    public void testDeleteSpeakerById() {
+        doNothing().when(speakerRepository).deleteById(1L);
+        target.deleteSpeakerById(1L);
+        verify(speakerRepository, times(1)).deleteById(anyLong());
+    }
+
 }
