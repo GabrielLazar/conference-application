@@ -13,9 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,6 +32,28 @@ class SpeakerServiceImplTest {
     @BeforeEach
     public void setUp() {
         target = new SpeakerServiceImpl(speakerRepository);
+    }
+
+    @Test
+    public void testGetAllSpeakersWithNoFilters() {
+        Speaker expected1 = new Speaker(1L, "James", "Bond", "dev", "Secret", "bio", new byte[1], null, null);
+        Speaker expected2 = new Speaker(2L, "John", "Doe", "qa", "abcCompany", "bio", new byte[1], null, null);
+
+        when(speakerRepository.findAll()).thenReturn(Arrays.asList(expected1, expected2));
+
+        List<Speaker> actualList = target.getAllSpeakers(Optional.empty(), Optional.empty());
+
+        assertEquals(2, actualList.size());
+        verify(speakerRepository, times(1)).findAll();
+        Comparator<Speaker> speakerComparator = Comparator.comparing(Speaker::getSpeaker_id).thenComparing(Speaker::getFirst_name)
+                .thenComparing(Speaker::getLast_name).thenComparing(Speaker::getTitle).thenComparing(Speaker::getCompany)
+                .thenComparing(Speaker::getSpeaker_bio);
+
+        assertThat(actualList).usingElementComparator(speakerComparator)
+                .usingElementComparatorIgnoringFields("speaker_photo","sessions","workshops").contains(expected1);
+
+        assertThat(actualList).usingElementComparator(speakerComparator)
+                .usingElementComparatorIgnoringFields("speaker_photo","sessions","workshops").contains(expected2);
     }
 
     @Test
