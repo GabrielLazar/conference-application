@@ -57,6 +57,26 @@ class SpeakerServiceImplTest {
     }
 
     @Test
+    public void testGetAllSpeakersWithJobTitle() {
+        Speaker expected1 = new Speaker(1L, "James", "Bond", "dev", "Secret", "bio", new byte[1], null, null);
+        Speaker expected2 = new Speaker(2L, "John", "Doe", "qa", "abcCompany", "bio", new byte[1], null, null);
+
+        when(speakerRepository.findAll()).thenReturn(Arrays.asList(expected1, expected2));
+
+        List<Speaker> actualList = target.getAllSpeakers(Optional.empty(),Optional.of("dev"));
+
+        assertEquals(1, actualList.size());
+        verify(speakerRepository, times(1)).findAll();
+        Comparator<Speaker> speakerComparator = Comparator.comparing(Speaker::getSpeaker_id).thenComparing(Speaker::getFirst_name)
+                .thenComparing(Speaker::getLast_name).thenComparing(Speaker::getTitle).thenComparing(Speaker::getCompany)
+                .thenComparing(Speaker::getSpeaker_bio);
+
+        assertThat(actualList).usingElementComparator(speakerComparator)
+                .usingElementComparatorIgnoringFields("speaker_photo","sessions","workshops").contains(expected1);
+
+    }
+
+    @Test
     public void testGetAllSpeakersWithCompanyName() {
         Speaker expected1 = new Speaker(1L, "James", "Bond", "dev", "Secret", "bio", new byte[1], null, null);
         Speaker expected2 = new Speaker(2L, "John", "Doe", "qa", "abcCompany", "bio", new byte[1], null, null);
