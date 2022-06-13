@@ -141,6 +141,28 @@ class SpeakerServiceImplTest {
     }
 
     @Test
+    public void testEditSpeakerById(){
+
+        Speaker expected = new Speaker(1L, "first_name", "last_name", "dev",
+                "company", "bio", new byte[1], null, null);
+
+        when(speakerRepository.saveAndFlush(expected)).thenReturn(expected);
+        when(speakerRepository.findById(1L)).thenReturn(Optional.of(expected));
+
+        Speaker actual = target.editSpeakerById(1L, expected);
+
+        verify(speakerRepository, times(1)).saveAndFlush(any());
+        verify(speakerRepository, times(2)).findById(anyLong());
+
+        assertEquals(expected.getFirst_name(),actual.getFirst_name());
+        assertEquals(expected.getLast_name(),actual.getLast_name());
+        assertEquals(expected.getTitle(),actual.getTitle());
+        assertEquals(expected.getCompany(),actual.getCompany());
+        assertEquals(expected.getSpeaker_bio(),actual.getSpeaker_bio());
+
+    }
+
+    @Test
     public void testDeleteSpeakerById() {
         doNothing().when(speakerRepository).deleteById(1L);
         target.deleteSpeakerById(1L);
