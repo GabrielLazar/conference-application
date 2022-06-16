@@ -3,7 +3,6 @@ package com.gabriellazar.conferenceapp.services.impl;
 
 import com.gabriellazar.conferenceapp.exceptions.DataNotFoundException;
 import com.gabriellazar.conferenceapp.models.Speaker;
-import com.gabriellazar.conferenceapp.models.Workshop;
 import com.gabriellazar.conferenceapp.repositories.SpeakerRepository;
 import com.gabriellazar.conferenceapp.services.SpeakerService;
 import com.gabriellazar.conferenceapp.utils.UnitTestAppender;
@@ -13,7 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
