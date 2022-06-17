@@ -1,5 +1,6 @@
 package com.gabriellazar.conferenceapp.services.impl;
 
+import com.gabriellazar.conferenceapp.exceptions.DataNotFoundException;
 import com.gabriellazar.conferenceapp.models.Session;
 import com.gabriellazar.conferenceapp.models.Speaker;
 import com.gabriellazar.conferenceapp.models.Workshop;
@@ -14,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -43,7 +45,13 @@ class SessionServiceImplTest {
         assertEquals(expected.getSession_name(), actual.getSession_name());
         assertEquals(expected.getSession_description(), actual.getSession_description());
         assertEquals(expected.getSession_length(), actual.getSession_length());
+    }
 
+    @Test
+    public void testGetSessionByIdThrowException() {
+        assertThatThrownBy(() -> target.getSessionById(0L))
+                .isInstanceOf(DataNotFoundException.class)
+                .hasMessage("Session not found with this id :: 0");
     }
 
 }
